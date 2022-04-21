@@ -6,6 +6,8 @@
  * @returns {*} content
  */
 export function getContent(singleContent, sharedContent) {
+  if (!sharedContent) return singleContent;
+
   let content = {};
   for (let key in singleContent) {
     if (
