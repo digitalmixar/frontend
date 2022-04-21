@@ -49,7 +49,7 @@ const Sections = ({ sections, preview }) => {
       {/* Show the actual sections */}
       {sections.map((section) => (
         <Section
-          sectionData={{ ...section.content, __component: section.__component }}
+          sectionData={section}
           key={`${section.__component}${section.id}`}
         />
       ))}

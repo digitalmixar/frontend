@@ -1,3 +1,4 @@
+import { getContent } from "utils/content";
 import Variant1 from "./GeneralPurposeSectionVariants/Variant1";
 
 const variants = {
@@ -5,8 +6,9 @@ const variants = {
 };
 
 const GeneralPurposeSection = ({ data }) => {
-  const Section = variants[data.variant] ?? variants.variant_1;
-  return <Section data={data} />;
+  const content = getContent(data.content, data.sharedContentPiece.content);
+  const Variant = variants[data.variant] ?? variants.variant_1;
+  return <Variant content={content} />;
 };
 
 export default GeneralPurposeSection;
