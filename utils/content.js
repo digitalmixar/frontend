@@ -1,11 +1,13 @@
 /**
  * Merges singleContent and sharedContent into one object. The content of singleContent is prioritized over sharedContent.
  *
- * @param {*} singleContent data.content
- * @param {*} sharedContent data.sharedContentPiece.content
+ * @param {*} data data object coming from strapi
  * @returns {*} content
  */
-export function getContent(singleContent, sharedContent) {
+export function getContent(data) {
+  let singleContent = data.content;
+  let sharedContent = data.sharedContentPiece?.content;
+
   if (!sharedContent) return singleContent;
 
   let content = {};

@@ -5,7 +5,7 @@ const Layout = ({ children, global, pageContext }) => {
   const { navbar, footer } = global;
 
   return (
-    <div className="font-roboto flex min-h-screen flex-col justify-between bg-light-grey-blue pt-20 2xl:pt-32">
+    <div className="font-roboto flex min-h-screen flex-col justify-between bg-light-grey-blue">
       {/* Aligned to the top */}
       <div className="flex-1">
         <Navbar global={global} navbar={navbar} pageContext={pageContext} />

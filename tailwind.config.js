@@ -17,6 +17,7 @@ module.exports = {
         },
         "light-grey-blue": "#e7eff7",
         "dark-grey": "#0d080d",
+        "surface-1": "#C3A7FF",
         orange: colors.orange,
       },
       container: {

@@ -6,7 +6,7 @@ const variants = {
 };
 
 const GeneralPurposeSection = ({ data }) => {
-  const content = getContent(data.content, data.sharedContentPiece?.content);
+  const content = getContent(data);
   const Variant = variants[data.variant] ?? variants.variant_1;
   return <Variant content={content} />;
 };

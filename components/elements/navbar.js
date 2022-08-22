@@ -44,7 +44,7 @@ const Navbar = ({ navbar, pageContext }) => {
     <>
       {/* The actual navbar */}
       <nav
-        className={`fixed inset-x-0 top-0 z-50 flex h-20 bg-black transition duration-1000 2xl:h-32`}
+        className={`fixed inset-x-0 top-0 z-50 flex h-10 bg-black transition duration-1000 2xl:h-16`}
       >
         <div className="mx-4 flex grow flex-row justify-between lg:mx-8 2xl:mx-16">
           {/* Content aligned to the left */}

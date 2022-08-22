@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import GeneralPurposeSection from "./sections/GeneralPurposeSection";
+import MainHero from "./sections/MainHero";
 
 // Map Strapi sections to section components
 const sectionComponents = {
   "sections.general-purpose-section": GeneralPurposeSection,
+  "sections.main-hero": MainHero,
 };
 
 // Display a section individually
