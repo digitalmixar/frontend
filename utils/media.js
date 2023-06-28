@@ -1,6 +1,6 @@
 export function getStrapiMedia(url) {
   if (url == null) {
-    return null;
+    throw new Error("url is null");
   }
 
   // Return the full URL if the media is hosted on an external provider

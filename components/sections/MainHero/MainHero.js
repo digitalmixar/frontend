@@ -5,34 +5,55 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import ButtonLink from "@/components/elements/button-link";
 import { getButtonAppearance } from "@/utils/button";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import MediaQuery from "react-responsive";
 
 const MainHero = ({ data }) => {
   const content = getContent(data);
 
   return (
-    <section className="relative flex h-screen items-end justify-start">
-      <div className="absolute inset-0 z-0 overflow-hidden bg-surface-1">
-        <CanvasBG />
-        <SVGPlayButton />
+    <section className="relative flex h-screen justify-start lg:items-center">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#8959F9] shadow-[0_0_200px_#00000070_inset]">
+        <Light />
+        <MediaQuery minWidth={1024}>
+          <CanvasBG />
+        </MediaQuery>
         <SVGLine />
+        <PlayButton />
       </div>
-      <div className={`${css["bg-overlay"]} absolute inset-0 z-0 `}></div>
-      <div className="absolute inset-0 z-0">
-        <SVGBars />
-      </div>
-      <div className="relative z-10">
-        {content.subheading && (
-          <h2 className={`text-3xl font-bold text-white`}>
-            {content.subheading}
-          </h2>
+      <div className="container relative z-10 mt-40 space-y-4">
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.5 }}
+          className="text-4xl font-bold text-primary-925 lg:text-6xl"
+        >
+          {content.heading}
+        </motion.h1>
+        {content.subHeading && (
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 2 }}
+            className={`text-1xl text-primary-925 lg:text-3xl`}
+          >
+            {content.subHeading}
+          </motion.h2>
         )}
-        <h1 className="text-4xl font-bold text-white">{content.heading}</h1>
         {content.text && <p>{content.text}</p>}
         {!!content.CTAs.length && (
-          <ButtonLink
-            button={content.CTAs[0]}
-            appearance={getButtonAppearance(content.CTAs[0].type, "light")}
-          />
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 2.5 }}
+            className="pt-6 pb-32"
+          >
+            <ButtonLink
+              button={content.CTAs[0]}
+              appearance={getButtonAppearance(content.CTAs[0].type, "light")}
+            />
+          </motion.div>
         )}
       </div>
     </section>
@@ -43,74 +64,126 @@ const CanvasBG = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const density = 50;
-    let mouseX = 0;
-    let mouseY = 0;
-    let handleMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
+    if (
+      typeof window !== "undefined" &&
+      typeof window.document !== "undefined" &&
+      canvasRef.current
+    ) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const density = 30;
+      const maxOffset = 7;
+      const offsetRefreshTime = 500;
+      let mouseX = 0;
+      let mouseY = 0;
+      let mouseRadius = 118;
+      let handleMouseMove = (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      };
 
-    document.addEventListener("mousemove", handleMouseMove);
+      const random = (min, max) => {
+        return Math.random() * (max - min) + min;
+      };
 
-    let numberOfPoints = (canvas.width / density) * (canvas.height / density);
-    let points = new Float32Array(numberOfPoints * 2);
+      document.addEventListener("mousemove", handleMouseMove);
 
-    let pointerX = 0;
-    let pointerY = 0;
-    for (let p = 0; p < numberOfPoints * 2; p += 2) {
-      pointerX += density;
-      if (pointerX > canvas.width - density) {
-        pointerX = density;
-        pointerY += density;
-      }
-      points[p] = pointerX;
-      points[p + 1] = pointerY;
-    }
+      let numberOfPoints = (canvas.width / density) * (canvas.height / density);
+      let points = new Float32Array(numberOfPoints * 2);
 
-    let pointsToDraw = [];
-
-    const draw = () => {
-      requestAnimationFrame(draw);
-
-      ctx.fillStyle = `rgba(195, 167, 255, 0.03)`;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < points.length; i += 2) {
-        let coordX = points[i];
-        let coordY = points[i + 1];
-
-        if (
-          coordX > mouseX - 155 &&
-          coordX < mouseX + 155 &&
-          coordY > mouseY - 155 &&
-          coordY < mouseY + 155
-        ) {
-          pointsToDraw.push(points[i], points[i + 1]);
+      let pointerX = 0;
+      let pointerY = 0;
+      for (let p = 0; p < numberOfPoints * 2; p += 2) {
+        pointerX += density;
+        if (pointerX > canvas.width - density) {
+          pointerX = density;
+          pointerY += density;
         }
+        points[p] = pointerX;
+        points[p + 1] = pointerY;
       }
 
-      ctx.fillStyle = `rgba(0, 0, 0, 0.05)`;
-      for (let p = 0; p < pointsToDraw.length - 2; p += 2) {
-        ctx.fillRect(pointsToDraw[p], pointsToDraw[p + 1], 10, 10);
-      }
+      let pointsToDraw = [];
+      let offsetX = random(-maxOffset, maxOffset);
+      let offsetY = random(-maxOffset, maxOffset);
 
-      pointsToDraw = [];
-    };
+      let previousMouseX = 0;
+      let previousMouseY = 0;
 
-    draw();
+      let previousFadingTimestamp = 0;
+      let previousOffsetTimestamp = 0;
+      const draw = (timestamp) => {
+        requestAnimationFrame(draw);
+
+        if (timestamp - previousFadingTimestamp > 100) {
+          ctx.fillStyle = `rgba(0, 0, 0, 0.09)`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          previousFadingTimestamp = timestamp;
+        }
+
+        for (let i = 0; i < points.length; i += 2) {
+          let coordX = points[i];
+          let coordY = points[i + 1];
+
+          const distance = Math.sqrt(
+            (mouseX - coordX) ** 2 + (mouseY - coordY) ** 2
+          );
+
+          if (distance < mouseRadius) {
+            pointsToDraw.push(coordX, coordY);
+          }
+        }
+
+        if (timestamp - previousOffsetTimestamp > offsetRefreshTime) {
+          offsetX = random(-maxOffset, maxOffset);
+          offsetY = random(-maxOffset, maxOffset);
+          previousOffsetTimestamp = timestamp;
+        }
+
+        if (mouseX !== previousMouseX || mouseY !== previousMouseY) {
+          ctx.fillStyle = `rgba(215, 215, 215, 0.08)`;
+          for (let p = 0; p < pointsToDraw.length - 2; p += 2) {
+            ctx.fillRect(
+              pointsToDraw[p] - 1 + offsetX,
+              pointsToDraw[p + 1] - 1 + offsetY,
+              8,
+              8
+            );
+            ctx.fillRect(
+              pointsToDraw[p] + 1 + offsetX,
+              pointsToDraw[p + 1] + 1 + offsetY,
+              8,
+              8
+            );
+          }
+          previousMouseX = mouseX;
+          previousMouseY = mouseY;
+        }
+
+        pointsToDraw = [];
+      };
+
+      draw();
+    }
 
     return () => {
       cancelAnimationFrame(draw);
+      if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
       document.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={`absolute inset-0 -z-10`}></canvas>;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`absolute inset-0 opacity-25 mix-blend-color-dodge`}
+    ></canvas>
+  );
 };
 
 const SVGLine = () => {
@@ -140,14 +213,14 @@ const SVGLine = () => {
     <svg
       ref={svg}
       className={css["svg-line"]}
-      viewBox="0 0 1238 632"
+      viewBox="0 0 778 403"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
     >
       <path
         ref={path}
-        d="M1234 254.562C1204.5 250.395 1140.7 285.162 1121.5 457.562C1116.83 513.895 1100.5 626.762 1072.5 627.562C1072.5 627.562 1040.5 634.362 1024.5 561.562L975.5 254.562C973.333 239.062 964.3 208.062 945.5 208.062C934.5 208.562 918.9 221.862 914.5 253.062L903 312.562C899.333 327.562 885.5 357.762 859.5 358.562C842.667 360.729 805.5 347.862 791.5 279.062L774.5 196.062C774.5 196.062 767.5 165.562 755 164.562C755 164.562 719 158.062 715.5 239.062L706.5 419.062C703.667 464.062 679.4 552.762 605 547.562C605 547.562 528 538.062 496 321.062L461.5 73.5621C458 49.8954 446.2 3.06207 427 5.06207C427 5.06207 399.5 2.06207 394.5 100.062L378 321.062C378 321.062 371.5 446.562 305 446.562C305 446.562 251 452.562 234 326.562L210 181.062C210 181.062 198 113.062 139.5 113.062C125.5 116.062 96.7998 104.762 95.9998 195.562C97.1665 215.895 87.8998 256.662 41.4998 257.062C32.1665 256.562 11.5998 254.462 3.99976 250.062"
-        stroke="black"
+        d="M777 162.076C680.621 177.809 724.16 405.523 672.166 398.856C620.172 392.19 629.05 50.6712 592.696 50.6712C556.342 50.6712 601.995 225.94 540.701 228.293C479.408 230.645 514.071 105.962 469.263 108.31C424.455 110.659 483.635 346.708 387.256 348.668C290.877 350.628 309.898 1.65874 267.628 4.01185C225.357 6.36495 265.936 286.323 191.85 284.709C117.765 283.094 169.874 67.377 82.4742 72.629C45.8317 74.8313 69.7922 136.085 55.1817 150.181C34.3973 170.232 2 161.023 2 161.023"
+        stroke="#4E0BA9"
         strokeWidth="8"
         strokeLinecap="round"
       />
@@ -155,96 +228,30 @@ const SVGLine = () => {
   );
 };
 
-const SVGPlayButton = () => {
-  const svgRef = useRef();
-  const rect1Ref = useRef();
-  const rect2Ref = useRef();
-  const rect3Ref = useRef();
-
-  useEffect(() => {
-    gsap.to([rect1Ref.current, rect2Ref.current, rect3Ref.current], {
-      duration: 0.7,
-      ease: "power2.inOut",
-      css: {
-        filter: "blur(24px)",
-      },
-      delay: 2.2,
-    });
-    gsap.to([rect1Ref.current, rect2Ref.current], {
-      duration: 0.7,
-      ease: "power2.inOut",
-      css: {
-        opacity: 1,
-      },
-      delay: 2.2,
-    });
-    gsap.to([rect3Ref.current], {
-      duration: 0.7,
-      ease: "power2.inOut",
-      css: {
-        opacity: 0.7,
-      },
-      delay: 2.2,
-    });
-  }, []);
-
+const Light = () => {
   return (
-    <>
-      <svg
-        ref={svgRef}
-        className={css["svg-play-button"]}
-        viewBox="0 0 182 363"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect
-          ref={rect1Ref}
-          x="-7"
-          y="-28"
-          width="246"
-          height="42"
-          fill="#B1004A"
-          style={{ transform: "rotate(47deg)", transformOrigin: "0px 0px" }}
-        ></rect>
-        <rect
-          ref={rect2Ref}
-          x="-7"
-          y="381"
-          width="246"
-          height="42"
-          fill="#1C9BA4"
-          style={{
-            transform: "rotate(-47deg)",
-            transformOrigin: "-34px 377px",
-          }}
-        ></rect>
-        <rect
-          ref={rect3Ref}
-          x="-14"
-          y="20"
-          width="42"
-          height="343"
-          fill="black"
-        ></rect>
-        <path
-          d="M-0.000244141 17.2644V205.5V344C-0.000244141 361.6 17.3121 370.5 31.4998 354.5C77.1664 303 170.2 201.264 179 191.264C183 186.719 182.666 175 179 171.5L28.9998 5.99995C20.9998 -3.32228 -0.000244141 -1.55785 -0.000244141 17.2644Z"
-          fill="white"
-        />
-      </svg>
-      <svg
-        className={css["svg-play-button-tip"]}
-        viewBox="0 0 182 363"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M120 256.897V107L179 172.097C182.667 175.597 183 187.316 179 191.861C176.054 195.209 163.665 208.84 146.774 227.427C138.698 236.312 129.594 246.33 120 256.897Z"
-          fill="white"
-        />
-      </svg>
-    </>
+    <div className="pointer-events-none absolute -bottom-20 right-0 z-[-1] max-w-[80vw]">
+      <Image src="/img/light.png" width={596} height={811} alt="light" />
+    </div>
+  );
+};
+
+const PlayButton = () => {
+  return (
+    <motion.div
+      animate={{
+        opacity: 1,
+      }}
+      transition={{ duration: 1.5, delay: 1.5 }}
+      className="pointer-events-none absolute right-1/2 top-3/4 w-56 translate-x-1/2 -translate-y-1/2 select-none opacity-0 lg:right-[15%] lg:top-1/2 lg:translate-x-0 xl:w-80"
+    >
+      <Image
+        src="/icons/rectangle-63.png"
+        width={297}
+        height={488}
+        alt="play button"
+      />
+    </motion.div>
   );
 };
 

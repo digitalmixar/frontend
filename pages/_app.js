@@ -1,18 +1,8 @@
-import Head from "next/head";
 import "../styles/index.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
     <>
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.4/viewer.min.css"
-          integrity="sha512-OgbWuZ8OyVQxlWHea0T9Bdy1oDhs380WxLMaLZbuitQ/mdntHBPnApxbTebB9N5KoHZd3VMkk3G2cTY563nu5w=="
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-      </Head>
       {/* Display the content */}
       <Component {...pageProps} />
     </>

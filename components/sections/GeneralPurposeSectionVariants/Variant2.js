@@ -6,60 +6,46 @@ import Markdown from "react-markdown";
 import NextImage from "@/components/elements/image";
 import HighlightedText from "@/components/elements/HighlightedText";
 
-const Variant2 = ({ data }) => {
+/**
+ *
+ * @param {{
+ *  content: {
+ *    heading: string,
+ *    subheading: string,
+ *    text: string,
+ *    media: array<object>,
+ *    decorativeMedia: array<object>,
+ *    CTAs: array<object>
+ * }}} props
+ * @returns JSX.Element
+ */
+const Variant2 = ({ content }) => {
   return (
-    <section className="pt-12 text-center">
-      <div className="container max-w-4xl space-y-6 px-4">
-        {data.extraIcon && (
-          <div className="mx-auto w-20">
-            <NextImage media={data.extraIcon} />
-          </div>
-        )}
-        <HighlightedText
-          tag="h4"
-          text={data.title}
-          className="w-full pt-4 text-center font-russo text-4xl text-gray-600"
-          highlightClasses={[
-            "text-highlight before:bg-black text-primary-600 block md:inline-block px-16 pt-2",
-            "text-highlight before:bg-primary-600 before:-left-3 before:-right-3 before:-inset-0 text-black",
-          ]}
-        />
-        <div className="prose mx-auto leading-snug lg:max-w-none">
-          <Markdown>{data.text}</Markdown>
-        </div>
-        {data.CTAs[0] && (
-          <div className=":w-full mb-4 inline-block sm:w-96">
-            <ButtonLink
-              button={data.CTAs[0]}
-              appearance={getButtonAppearance(data.CTAs[0].type, "light")}
-              wFull
+    <section className="bg-primary-100 py-12 px-2">
+      <div className="container flex rounded-4xl bg-butterfly-bush-700 p-12 text-primary-100">
+        <div className="hidden p-8 lg:block lg:w-1/3">
+          <div className="relative h-full w-full">
+            <Image
+              src={getStrapiMedia(content.decorativeMedia[0].url)}
+              layout="fill"
+              className="pointer-events-none select-none"
             />
           </div>
-        )}
-      </div>
-      {!!data.media.length ? (
-        <div className="relative !mt-16 h-[500px] lg:mx-24">
-          <Image
-            src={getStrapiMedia(data.media[0].url)}
-            objectPosition="center"
-            objectFit="cover"
-            layout="fill"
-          />
-          <span
-            style={{
-              backgroundImage:
-                "radial-gradient(rgba(255, 255, 255, .4), transparent 25%)",
-              backgroundSize: "14px 10px",
-            }}
-            className="absolute top-1/3 left-1/4 right-0 bottom-10"
-          ></span>
         </div>
-      ) : (
-        <>
-          <br />
-          <br />
-        </>
-      )}
+        <div className="flex w-full flex-col justify-center lg:w-2/3 lg:px-12">
+          {content.heading && (
+            <h2 className="text-5xl font-bold tracking-wider lg:text-5xl lg:leading-snug">
+              {content.heading}
+            </h2>
+          )}
+          {content.text && (
+            <div
+              className="prose mt-12 text-xl text-butterfly-bush-200 prose-strong:text-butterfly-bush-50"
+              dangerouslySetInnerHTML={{ __html: content.text }}
+            />
+          )}
+        </div>
+      </div>
     </section>
   );
 };

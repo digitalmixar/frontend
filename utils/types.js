@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 
 export const linkPropTypes = PropTypes.shape({
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  url: PropTypes.string.isRequired,
-  text: PropTypes.string,
-  newTab: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  target: PropTypes.string,
 });
 
 export const mediaPropTypes = PropTypes.shape({
@@ -15,9 +15,10 @@ export const mediaPropTypes = PropTypes.shape({
 });
 
 export const buttonLinkPropTypes = PropTypes.shape({
-  theme: PropTypes.string,
-  text: PropTypes.string.isRequired,
-  newTab: PropTypes.bool,
-  url: PropTypes.string,
-  icon: PropTypes.any,
+  type: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  target: PropTypes.string,
+  to: PropTypes.shape({
+    to: PropTypes.string,
+  }),
 });

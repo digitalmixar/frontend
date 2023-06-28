@@ -1,8 +1,15 @@
 /**
- * Merges singleContent and sharedContent into one object. The content of singleContent is prioritized over sharedContent.
  *
- * @param {*} data data object coming from strapi
- * @returns {*} content
+ * @param {{
+ *  content: {
+ *    heading: string,
+ *    subheading: string,
+ *    text: string,
+ *    media: array<object>,
+ *    decorativeMedia: array<object>,
+ *    CTAs: array<object>
+ * }}} props
+ * @returns JSX.Element
  */
 export function getContent(data) {
   let singleContent = data.content;

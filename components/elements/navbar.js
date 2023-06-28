@@ -13,6 +13,7 @@ import Image from "next/image";
 import CustomLink from "./custom-link";
 import LocaleSwitch from "../locale-switch";
 import { throttle } from "utils/performance";
+import MenuIcon from "../SVGicons/MenuIcon";
 
 const Navbar = ({ navbar, pageContext }) => {
   const router = useRouter();
@@ -44,33 +45,21 @@ const Navbar = ({ navbar, pageContext }) => {
     <>
       {/* The actual navbar */}
       <nav
-        className={`fixed inset-x-0 top-0 z-50 flex h-10 bg-black transition duration-1000 2xl:h-16`}
+        className={`fixed inset-x-0 top-0 z-50 flex h-20 transition duration-1000 2xl:h-32`}
       >
-        <div className="mx-4 flex grow flex-row justify-between lg:mx-8 2xl:mx-16">
+        <div className="container flex grow flex-row justify-between">
           {/* Content aligned to the left */}
-          <div className="flex grow flex-row justify-between">
+          <div className="flex items-center">
             <Link href="/">
-              <a className="font-basker inline-flex items-center text-xl text-primary-600 md:text-base lg:text-2xl 2xl:text-[1.4vw] 2xl:tracking-wider">
-                CORP
+              <a>
+                <Image
+                  src="/logo/logo.svg"
+                  width={160}
+                  height={34}
+                  alt="logo de digitalmix"
+                />
               </a>
             </Link>
-            {/* List of links on desktop */}
-            <ul className="ml-6 mr-4 hidden list-none flex-row gap-3 lg:mr-8 lg:flex xl:mr-16 2xl:mr-[5vw] 2xl:gap-[1.8vw]">
-              {navbar.links.map((navLink) => (
-                <li
-                  key={navLink.id}
-                  className={`flex items-center ${
-                    navLink.url == currentPage && "border-b-2 border-white"
-                  }`}
-                >
-                  <CustomLink link={navLink} locale={router.locale}>
-                    <div className="px-2 py-1 text-xs uppercase text-primary-600 hover:text-primary-300 lg:text-base lg:font-medium 2xl:text-[1.1vw]">
-                      {navLink.label}
-                    </div>
-                  </CustomLink>
-                </li>
-              ))}
-            </ul>
           </div>
           <div className="flex items-center">
             {/* Locale Switch Mobile */}
@@ -80,13 +69,9 @@ const Navbar = ({ navbar, pageContext }) => {
               </div>
             )}
             {/* Hamburger menu on mobile */}
-            <button
-              onClick={() => setMobileMenuIsShown(true)}
-              className="flex lg:hidden"
-            >
-              <Image width="64" height="40" src="/icons/menu-icon.svg" />
+            <button onClick={() => setMobileMenuIsShown(true)} className="flex">
+              <MenuIcon />
             </button>
-            {/* CTA button on desktop */}
 
             {/* Locale Switch Desktop */}
             {pageContext.localizedPaths.length > 0 && (

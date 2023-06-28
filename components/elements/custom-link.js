@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ActionLink, allowedActions } from "utils/actions";
 
 const CustomLink = ({ link, children, wFull = false, className, ...props }) => {
-  let href = link.url.href;
+  let href = link.to.to;
   const isInternalLink = href.startsWith("/");
 
   // For internal links, use the Next.js Link component
@@ -38,7 +38,7 @@ const CustomLink = ({ link, children, wFull = false, className, ...props }) => {
   }
 
   // Plain <a> tags for external links
-  if (link.newTab) {
+  if (link.target === "new_tab") {
     return (
       <a
         className={`${wFull && "w-full"} ${className}`}

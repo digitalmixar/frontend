@@ -12,7 +12,7 @@ const Layout = ({ children, global, pageContext }) => {
         <div>{children}</div>
       </div>
       {/* Aligned to the bottom */}
-      <Footer global={global} footer={footer} />
+      {/* <Footer global={global} footer={footer} /> */}
     </div>
   );
 };

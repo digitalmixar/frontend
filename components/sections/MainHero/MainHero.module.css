@@ -1,80 +1,25 @@
 .svg-line {
-  width: 67%;
+  width: 100%;
   height: auto;
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 70%;
   transform: translateY(-50%);
-  z-index: -1;
   visibility: hidden;
 }
 
-.svg-play-button {
-  width: 163px;
-  height: 326px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  overflow: visible;
-}
-
-.svg-play-button > rect {
-  filter: blur(10px);
-  opacity: 0;
-}
-
-.svg-play-button-tip {
-  width: 163px;
-  height: 326px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
-.svg-play-button,
-.svg-play-button-tip {
-  max-height: 37%;
+@media (min-width: 1024px) {
+  .svg-line {
+    width: 55%;
+    top: 50%;
+  }
 }
 
 .bg-overlay {
   background-color: rgba(195, 167, 255, 0.3);
   background-image: radial-gradient(
-    circle,
+    circle at 90% 90%,
     rgba(195, 167, 255, 0) 20%,
     rgba(104, 58, 204, 0.8) 80%
   );
-}
-
-.svg-bars1,
-.svg-bars2,
-.svg-bars3 {
-  height: 83%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-35%);
-  z-index: -1;
-  opacity: 0;
-  filter: drop-shadow(-2px 0 2px rgba(0, 0, 0, 0.8));
-  overflow: visible;
-}
-
-.svg-bars1 > circle,
-.svg-bars2 > circle,
-.svg-bars3 > circle {
-  filter: blur(3px);
-  opacity: 0.6;
-}
-
-.svg-bars1 {
-  right: 12%;
-}
-.svg-bars2 {
-  right: 22%;
-}
-.svg-bars3 {
-  right: 32%;
 }
