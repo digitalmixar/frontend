@@ -1,16 +1,21 @@
 import { getContent } from "utils/content";
 import css from "./MainHero.module.css";
 import { gsap } from "gsap";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import ButtonLink from "@/components/elements/button-link";
 import { getButtonAppearance } from "@/utils/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import MediaQuery from "react-responsive";
+import Typed from "react-typed";
 
 const MainHero = ({ data }) => {
   const content = getContent(data);
+  const [displayTyped, setdisplayTyped] = useState(false);
+  useEffect(() => {
+    setdisplayTyped(true);
+  }, []);
 
   return (
     <section className="relative flex h-screen justify-start lg:items-center">
@@ -22,31 +27,45 @@ const MainHero = ({ data }) => {
         <SVGLine />
         <PlayButton />
       </div>
-      <div className="container relative z-10 mt-40 space-y-4">
-        <motion.h1
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.5 }}
-          className="text-4xl font-bold text-primary-925 lg:text-6xl"
-        >
-          {content.heading}
-        </motion.h1>
+      <div className="container  relative z-10 mt-40 space-y-4">
+        <div className="animated-typing text-4xl font-bold text-primary-925 lg:text-6xl">
+          {displayTyped ? (
+            <Typed
+              strings={[
+                "SEO",
+                "Marketing Digital",
+                "Growth Marketing",
+                "User Experience",
+                "WEB Development",
+                "Ecommerce",
+                "Make an Appointment",
+                "Custom Software Development",
+              ]}
+              typeSpeed={150}
+              backSpeed={50}
+              loop
+            />
+          ) : (
+            <h1>Custom Software Development</h1>
+          )}
+        </div>
         {content.subHeading && (
           <motion.h2
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2 }}
+            transition={{ duration: 0.5 }}
             className={`text-1xl text-primary-925 lg:text-3xl`}
           >
             {content.subHeading}
           </motion.h2>
         )}
-        {content.text && <p>{content.text}</p>}
+
         {!!content.CTAs.length && (
+          // , delay: 2.5
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.5 }}
+            transition={{ duration: 0.5 }}
             className="pt-6 pb-32"
           >
             <ButtonLink
@@ -205,7 +224,7 @@ const SVGLine = () => {
     gsap.to(path.current, {
       duration: 4,
       ease: "power2.inOut",
-      strokeDashoffset: 0,
+      strokeDashoffset: 290,
     });
   }, []);
 
